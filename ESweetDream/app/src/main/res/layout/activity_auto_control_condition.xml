@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:addStatesFromChildren="true"
+        android:gravity="center_vertical"
+        android:paddingRight="0dip"
+        >
+
+        <!--
+            TextView label goes at the left.
+        -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="취침시간             "
+            android:textColor="?android:attr/textColorSecondary"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            />
+
+        <Spinner
+            android:id="@+id/sleep_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dialog">
+        </Spinner>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"/>
+
+        <Spinner
+            android:id="@+id/sleep_minute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Spinner>
+        <!--
+            The button goes at the right.
+        -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:addStatesFromChildren="true"
+        android:gravity="center_vertical"
+        android:paddingTop="20dp"
+        >
+
+        <!--
+            TextView label goes at the left.
+        -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="기상시간             "
+            android:textColor="?android:attr/textColorSecondary"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            />
+
+        <Spinner
+            android:id="@+id/wake_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Spinner>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"/>
+
+        <Spinner
+            android:id="@+id/wake_minute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Spinner>
+        <!--
+            The button goes at the right.
+        -->
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:addStatesFromChildren="true"
+        android:gravity="center_vertical"
+        android:paddingTop="20dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="온도                     "
+            android:textColor="?android:attr/textColorSecondary"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            />
+
+
+        <Spinner
+            android:id="@+id/temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40dp">
+        </Spinner>
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="이하"
+            android:textOn="이상"/>
+        <!--
+            The button goes at the right.
+        -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:addStatesFromChildren="true"
+        android:gravity="center_vertical"
+        android:paddingTop="20dp"
+        >
+
+        <!--
+            TextView label goes at the left.
+        -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="습도                     "
+            android:textColor="?android:attr/textColorSecondary"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            />
+
+        <Spinner
+            android:id="@+id/humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40dp">
+        </Spinner>
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="이하"
+            android:textOn="이상"/>
+        <!--
+            The button goes at the right.
+        -->
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:addStatesFromChildren="true"
+        android:gravity="center_vertical"
+        android:paddingTop="20dp"
+        >
+
+        <!--
+            TextView label goes at the left.
+        -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="조도                     "
+            android:textColor="?android:attr/textColorSecondary"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            />
+
+        <Spinner
+            android:id="@+id/lux"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="60dp">
+        </Spinner>
+
+
+        <!--
+            The button goes at the right.
+        -->
+    </LinearLayout>
+
+</LinearLayout>

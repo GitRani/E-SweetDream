@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Popup</string>
+    <string name="group_create">그룹 생성</string>
+    <string name="group_delete">그룹 삭제</string>
+    <string name="do_group_delete">Delete</string>
+    <string name="message">...을 먼저 눌러서 자동제어조건을 설정하세요</string>
+    <string name="control">제어방식</string>
+    <string name="do_autocontrolcondition">자동제어조건 설정</string>
+    <string name="group_edit">그룹 편집</string>
+    <string name="do_submit">SUBMIT</string>
+    <string name="submit">SUBMIT</string>
+</resources>

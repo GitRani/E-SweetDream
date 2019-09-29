@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.ryuon.popup">
+
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Activity.SplashActivity" android:label="E-편한꿀잠">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Activity.MainActivity"
+            android:label="그룹 관리" />
+        <!--<activity android:name=".Activity.MainActivity"-->
+            <!--android:label="그룹 관리" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
+        <!-- 팝업 Activity -->
+        <activity
+            android:theme="@style/popupTheme"
+            android:name=".Activity.PopupActivity"
+            android:screenOrientation="portrait"/>
+
+        <!-- 그룹 제어 Activity -->
+        <activity
+            android:name=".Activity.GroupControlActivity"
+            android:label="그룹 제어"/>
+
+        <!-- 그룹 편집 Activity -->
+        <activity
+            android:name=".Activity.GroupEditingListActivity"
+            android:label="그룹 편집"/>
+        <activity
+            android:name=".Activity.GroupEditingActivity_new"
+            android:label="그룹 편집"/>
+
+        <!-- 그룹 삭제 Activity -->
+        <activity
+            android:name=".Activity.GroupDeletingActivity"
+            android:label="그룹 삭제"/>
+
+        <!-- 그룹 자동 제어 조건 설정 Activity -->
+        <activity
+            android:name=".AutoControl.AutoControlConditionActivity"
+            android:label="자동 제어 조건 설정"/>
+
+        <!-- 무드등 자동 제어 Activity, 뷰 없음 -->
+        <activity
+            android:name=".AutoControl.AutoLampActivity" />
+
+        <!-- 플러그 자동 제어 Activity, 뷰 없음 -->
+        <activity
+            android:name=".AutoControl.AutoPlugActivity" />
+
+        <!-- 블라인드 자동 제어 Activity, 뷰 없음 -->
+        <activity
+            android:name=".AutoControl.AutoBlindActivity" />
+
+        <!-- 무드등 수동 제어 Activity -->
+        <activity
+            android:name=".ManualControl.ManualLampActivity"
+            android:label="무드등 수동 제어"/>
+
+        <!-- 플러그 수동 제어 Activity -->
+        <activity
+            android:name=".ManualControl.ManualPlugActivity"
+            android:label="멀티탭 수동 제어"/>
+
+        <!-- 블라인드 수동 제어 Activity -->
+        <activity
+            android:name=".ManualControl.ManualBlindActivity"
+            android:label="블라인드 수동 제어"/>
+
+    </application>
+
+</manifest>

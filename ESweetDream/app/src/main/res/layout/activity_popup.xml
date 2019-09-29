@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#eeeeee"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content">
+
+    <!-- 타이틀바 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:background="#87ed2f"
+            android:gravity="center"
+            android:text="무드등 색 변경"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <!-- //end 타이틀바 -->
+
+    <!-- Notice -->
+    <LinearLayout
+        android:padding="24dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="200dp"
+            android:background="@drawable/button05"
+            android:onClick="onBlueButtonClicked"/>
+
+        <Button
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="-40dp"
+            android:layout_marginLeft="160dp"
+            android:background="@drawable/button04"
+            android:onClick="onGreenButtonClicked"/>
+
+        <Button
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="-40dp"
+            android:background="@drawable/button03"
+            android:onClick="onYellowButtonClicked"/>
+
+        <Button
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="-40dp"
+            android:background="@drawable/button02"
+            android:onClick="onOrangeButtonClicked"/>
+
+        <Button
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="-40dp"
+            android:background="@drawable/button01"
+            android:onClick="onRedButtonClicked"/>
+
+
+
+
+    </LinearLayout>
+    <!-- Notice -->
+
+    <View
+        android:background="#66bdbdbd"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <!-- 닫기 버튼 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:background="#00000000"
+            android:gravity="center"
+            android:onClick="mOnClose"
+            android:padding="16dp"
+            android:text="취소"
+            android:textSize="15sp" />
+    </LinearLayout>
+    <!--// 닫기 버튼 -->
+</LinearLayout>
+

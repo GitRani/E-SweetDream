@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_weight="6"
+        android:gravity="center_vertical"
+        android:textColor="#000000"
+        android:id="@+id/textView1"
+        android:text=""/>
+
+    <Button
+        android:layout_height="match_parent"
+        android:layout_width="500px"
+        android:layout_weight="1"
+        android:id="@+id/mood_button"
+        android:text="color"
+        android:onClick="onPopupClicked"/>
+
+    <!--버튼과 버튼 사이의 간격 조절 텍스트 뷰. 큰 의미는 없다-->
+
+
+    <TextView
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:text=" "/>
+
+    <Button
+        android:layout_height="match_parent"
+        android:layout_width="305px"
+        android:layout_weight="1"
+        android:id="@+id/mood_button1"
+        android:text=">"
+        android:onClick="onButtonClicked"/>
+
+</LinearLayout>

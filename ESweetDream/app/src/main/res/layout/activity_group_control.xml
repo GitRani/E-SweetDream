@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/testt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/control"
+            android:textSize="15pt"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:text="수동   "
+            android:textStyle="bold" />
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:switchMinWidth="70dp"
+            android:onClick="onSwitchClicked"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="자동"
+            android:textStyle="bold"
+            android:textColor="#ffff0000"/>
+
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/group_list_mood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:layout_marginTop="5dp"/>
+
+    <ListView
+        android:id="@+id/group_list_plug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice" />
+
+    <ListView
+        android:id="@+id/group_list_blind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice" />
+
+    <ListView
+        android:id="@+id/group_list_sensor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"/>
+
+
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="제원값(온도-습도-조도): ???    "/>
+</LinearLayout>
+
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/sleepTime_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="여기에 자동제어조건 중 취침시간이 표시됩니다."/>
+
+    <TextView
+        android:id="@+id/tt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+
+</LinearLayout>
