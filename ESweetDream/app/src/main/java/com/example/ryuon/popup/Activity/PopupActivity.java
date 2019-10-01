@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ryuon.popup.Bluetooth.BluetoothHelper;
+import com.example.ryuon.popup.Module_Object.Group;
 import com.example.ryuon.popup.Module_Object.Lamp;
 import com.example.ryuon.popup.R;
 
@@ -19,6 +20,7 @@ public class PopupActivity extends AppCompatActivity {
 
     ArrayList<Lamp> lamp;
     String send_Info;
+    Group receivedData_selected_group;
 
 
     @Override
@@ -28,6 +30,7 @@ public class PopupActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_popup);
 
+        receivedData_selected_group = (Group) getIntent().getSerializableExtra("selectedGroup");
         lamp = (ArrayList<Lamp>)getIntent().getSerializableExtra("lamp");
 
 
@@ -36,36 +39,24 @@ public class PopupActivity extends AppCompatActivity {
     }
 
     public void onRedButtonClicked(View view){
-        send_color_Data("1");
-        System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
-    }
-    public void onOrangeButtonClicked(View view){
-
+        Intent intent = new Intent(this,GroupControlActivity.class);
+        intent.putExtra("selectedGroup", receivedData_selected_group);
+        setResult(100, intent);
+        finish();
     }
     public void onYellowButtonClicked(View view){
-        send_color_Data("3");
+        Intent intent = new Intent(this,GroupControlActivity.class);
+        intent.putExtra("selectedGroup", receivedData_selected_group);
+        setResult(101, intent);
+        finish();
     }
-
-    public void onGreenButtonClicked(View view){
-
-    }
-
     public void onBlueButtonClicked(View view){
-        send_color_Data("5");
+        Intent intent = new Intent(this,GroupControlActivity.class);
+        intent.putExtra("selectedGroup", receivedData_selected_group);
+        setResult(102, intent);
+        finish();
     }
-
-    void send_color_Data(String color) {
-        try{
-            lamp.get(0).setColor(color);
-            send_Info=lamp.get(0).getPower()+lamp.get(0).getWeather()+lamp.get(0).getColor();
-            // 데이터 송신
-            BluetoothHelper.send_Data(0, send_Info);
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
+    
     //취소 버튼 클릭
     public void mOnClose(View v){
         //데이터 전달하기

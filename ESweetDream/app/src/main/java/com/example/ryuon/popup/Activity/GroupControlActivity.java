@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,6 +93,9 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
     Group receivedData_selected_group;
 
     Thread thread;
+    Thread weatherThread;
+
+    final Handler handler = new Handler(); // 날씨 스레드를 위한 핸들러
 
     LocationManager locationManager;
     double latitude;
@@ -104,11 +108,6 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_control);
 
-        // 새로추가
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager != null) {
-            requestLocation();
-        }
 
         receivedData_selected_group = (Group) getIntent().getSerializableExtra("selectedGroup");
 
@@ -128,6 +127,10 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
         }
 
 
+
+
+
+
         //간단한 팝업창이 뜨는 부분
         CharSequence text="자동제어조건을 설정하세요";
         int duration=Toast.LENGTH_LONG;
@@ -142,8 +145,8 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
 
         // 무드등이 있을경우 색버튼을 포함하는 리스트뷰를 따로 생성해야 하므로 조건문을 붙여봤다.
         if(sortModuleList.get(0).getName().contains("무드등")){
-
-
+            // 새로추가
+            searchingWeather(); // 날씨탐색
 
             // 아이템 로드, 아래의 자바파일과 레이아웃과 일관성 있게 인자로 들어가는 어레이리스트도 2번으로 썼다.(헷갈리지말라고)
             loadItemsFromLampDB(sortModuleList);
@@ -178,6 +181,10 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
         String message = intent.getStringExtra(EXTRA_MESSAGE);
         TextView messageView = (TextView)findViewById(R.id.sleepTime_result);
         messageView.setText(message);
+
+
+
+
     }
 
     //멀티탭 전용 어레이 리스트 생성
@@ -245,6 +252,21 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
         if (requestCode == 0) {
 
         }
+
+        // popupActivity
+        else if(requestCode == 1){
+            switch(resultCode){
+                case 100:
+                    lamp.get(0).setColor("1");
+                    break;
+                case 101:
+                    lamp.get(0).setColor("3");
+                    break;
+                case 102:
+                    lamp.get(0).setColor("5");
+                    break;
+            }
+        }
     }
 
 
@@ -255,7 +277,7 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
         if (event_position == 1) {
             Intent intent = new Intent(this, ManualPlugActivity.class);
             intent.putExtra("moduleNames", module_name);
-            startActivity(intent);
+            intent.putExtra("selectedGroup", receivedData_selected_group);
         } else if (event_position == 2){
             Intent intent = new Intent(this, ManualBlindActivity.class);
             intent.putExtra("moduleNames", module_name);
@@ -271,7 +293,7 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
             if (id == R.id.mood_button) {
                 Intent intent = new Intent(this, PopupActivity.class);
                 intent.putExtra("lamp",lamp);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             } else {
                 Intent intent = new Intent(this, ManualLampActivity.class);
                 intent.putExtra("lamp", lamp);
@@ -353,10 +375,45 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
         }
     }
 
+    // 날씨정보를 1시간마다 받아옴
+    public void searchingWeather(){
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        if (locationManager != null) {
+            weatherThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while(!Thread.currentThread().isInterrupted()){ // 안먹힘...
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                requestLocation();
+                            }
+                        });
+                        try{
+                            // 1시간마다 갱신
+                            thread.sleep(360000);
+                        }
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+            }
+            );
+            weatherThread.start();
+        }
+    }
+
     @Override
     public void onBackPressed() {
         thread.interrupt();
+        weatherThread.interrupt();
+
         thread = null;
+        weatherThread = null;
+
         finish();
     }
 

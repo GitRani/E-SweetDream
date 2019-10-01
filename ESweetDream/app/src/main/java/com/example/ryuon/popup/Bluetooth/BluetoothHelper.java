@@ -133,9 +133,9 @@ public class BluetoothHelper implements Serializable, Runnable {
 
     }
 
-    private static OutputStream outputStream = null; // 20190916.12:31 add
+    private static OutputStream outputStream = null;
     // 모듈에 맞는 outputStream을 get하여 아두이노로 송신한다.
-    public static void send_Data(int deviceIndex, String send_Info) { // 20190916.12:31 add
+    public static void send_Data(int deviceIndex, String send_Info) {
         try{
             // 데이터 송신
             outputStream = outputStreams.get(deviceIndex);
