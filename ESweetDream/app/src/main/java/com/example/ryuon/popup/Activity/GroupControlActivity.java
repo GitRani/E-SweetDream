@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import com.example.ryuon.popup.AutoControl.AutoControlConditionActivity;
 
 
+import com.example.ryuon.popup.AutoControl.AutoLampActivity;
 import com.example.ryuon.popup.Bluetooth.BluetoothHelper;
 import com.example.ryuon.popup.CustomViewAdapter.GroupControl.ListViewBtnAdapter_Blind;
 import com.example.ryuon.popup.CustomViewAdapter.GroupControl.ListViewBtnAdapter_Lamp;
@@ -82,7 +83,7 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
     ListViewBtnAdapter_Blind blindAdapter;
 
     ArrayList<Plug> plug;
-    ArrayList<Lamp> lamp;
+    static ArrayList<Lamp> lamp;
     ArrayList<Blind> blind;
     ArrayList<Sensor> sensor;
 
@@ -94,6 +95,9 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
 
     Thread thread;
     Thread weatherThread;
+    Thread autoMoodThread;
+
+    AutoLampActivity autoLampActivity;
 
     final Handler handler = new Handler(); // 날씨 스레드를 위한 핸들러
 
@@ -247,9 +251,18 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
         return super.onOptionsItemSelected(item);
     }
 
+    ArrayList<String> auto_control_Info = new ArrayList<>();
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0) {
+            auto_control_Info = (ArrayList<String>)data.getSerializableExtra("go_GroupControl");
+
+            String make_sleep_time = auto_control_Info.get(0) + auto_control_Info.get(1);
+            lamp.get(0).set_sleep_time(make_sleep_time);
+
+            String wake_sleep_time = auto_control_Info.get(2) + auto_control_Info.get(3);
+            lamp.get(0).set_wake_time(wake_sleep_time);
 
         }
 
@@ -321,9 +334,27 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
 //        Button manual_control2 = (Button)findViewById(R.id.mood_button1);
 //        Button manual_control3 = (Button)findViewById(R.id.button2);
 
-        if (!lamp.isEmpty()) {
+        if (!lamp.isEmpty() && lamp.get(0).get_sleep_time() != "" && lamp.get(0).get_wake_time() != "") {
             lampAdapter.setActivate(on);
             lampAdapter.notifyDataSetChanged();
+
+
+            boolean interrupt = false;
+            if(autoLampActivity == null && autoMoodThread == null){
+                autoLampActivity = new AutoLampActivity(lamp);
+                autoMoodThread = new Thread(autoLampActivity);
+
+                autoMoodThread.start();
+
+            }else{
+                autoMoodThread.interrupt();
+                autoLampActivity = new AutoLampActivity(lamp);
+                autoMoodThread = new Thread(autoLampActivity);
+
+                autoMoodThread.start();
+            }
+
+
         }
 
         if (!plug.isEmpty()) {

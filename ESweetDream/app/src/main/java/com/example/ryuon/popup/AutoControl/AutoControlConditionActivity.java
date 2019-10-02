@@ -35,10 +35,9 @@ public class AutoControlConditionActivity extends AppCompatActivity{
     String humidity_item;
     String lux_item;
     // 위의 String 정보를 모두 담아 보낸다.
-    String auto_condition_info;
-    BluetoothHelper bluetoothHelper;
-    ArrayList<String> module_name;
     Group receivedData_selected_group;
+
+    ArrayList<String> auto_condition_info = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,61 +219,62 @@ public class AutoControlConditionActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
+
     public void makeInfo(){
         if(sleep_hour_value.length() == 1){
-            auto_condition_info = "0" + sleep_hour_value;
+            auto_condition_info.add("0" + sleep_hour_value);
         }
         else{
-            auto_condition_info += sleep_hour_value;
+            auto_condition_info.add(sleep_hour_value);
         }
 
         if(sleep_minute_value.length() == 1){
-            auto_condition_info = "0" + sleep_minute_value;
+            auto_condition_info.add("0" + sleep_minute_value);
         }
         else{
-            auto_condition_info += sleep_minute_value;
+            auto_condition_info.add(sleep_minute_value);
         }
 
         if(wake_hour_value.length() == 1){
-            auto_condition_info = "0" + wake_hour_value;
+            auto_condition_info.add("0" + wake_hour_value);
         }
         else{
-            auto_condition_info += wake_hour_value;
+            auto_condition_info.add(wake_hour_value);
         }
 
         if(wake_minute_value.length() == 1){
-            auto_condition_info = "0" + wake_minute_value;
+            auto_condition_info.add("0" + wake_minute_value);
         }
         else{
-            auto_condition_info += wake_minute_value;
+            auto_condition_info.add(wake_minute_value);
         }
 
-        if(temperature_item.length() == 1){
-            auto_condition_info = "0"+ temperature_item;
-        }
-        else{
-            auto_condition_info += temperature_item;
-        }
-
-        if(humidity_item.length() == 1){
-            auto_condition_info = "00" + humidity_item;
-        }
-        else if(humidity_item.length() == 2){
-            auto_condition_info = "0" + humidity_item;
-        }
-        else{
-            auto_condition_info += humidity_item;
-        }
-
-        if(lux_item.length() == 1){
-            auto_condition_info = "00" + lux_item;
-        }
-        else if(lux_item.length() == 2){
-            auto_condition_info = "0" + lux_item;
-        }
-        else{
-            auto_condition_info += lux_item;
-        }
+//        if(temperature_item.length() == 1){
+//            auto_condition_info = "0"+ temperature_item;
+//        }
+//        else{
+//            auto_condition_info += temperature_item;
+//        }
+//
+//        if(humidity_item.length() == 1){
+//            auto_condition_info = "00" + humidity_item;
+//        }
+//        else if(humidity_item.length() == 2){
+//            auto_condition_info = "0" + humidity_item;
+//        }
+//        else{
+//            auto_condition_info += humidity_item;
+//        }
+//
+//        if(lux_item.length() == 1){
+//            auto_condition_info = "00" + lux_item;
+//        }
+//        else if(lux_item.length() == 2){
+//            auto_condition_info = "0" + lux_item;
+//        }
+//        else{
+//            auto_condition_info += lux_item;
+//        }
     }
 
 
