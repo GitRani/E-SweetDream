@@ -83,11 +83,12 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
     ListViewBtnAdapter_Blind blindAdapter;
 
     ArrayList<Plug> plug;
-    static ArrayList<Lamp> lamp;
+    ArrayList<Lamp> lamp;
     ArrayList<Blind> blind;
     ArrayList<Sensor> sensor;
 
     ArrayList<String> module_name;
+    ArrayList<String> auto_control_Info = new ArrayList<>();
 
     BluetoothHelper bluetoothHelper;
 
@@ -129,11 +130,6 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
             thread = new Thread(bluetoothHelper);
             thread.start();
         }
-
-
-
-
-
 
         //간단한 팝업창이 뜨는 부분
         CharSequence text="자동제어조건을 설정하세요";
@@ -251,7 +247,6 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
         return super.onOptionsItemSelected(item);
     }
 
-    ArrayList<String> auto_control_Info = new ArrayList<>();
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -503,17 +498,23 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
                     if (object != null) {
                         result=object.toString();
 
+                        TextView weather = (TextView)findViewById(R.id.weather);
+
                         if(result.contains("맑음")){
                             lamp.get(0).setWeather("1");
+                            weather.setText("현재 위치한 지역의 날씨는 '맑음'입니다.");
                         }
                         else if(result.contains("구름") || result.contains("흐림")){
                             lamp.get(0).setWeather("2");
+                            weather.setText("현재 위치한 지역의 날씨는 '흐림'입니다.");
                         }
                         else if(result.contains("비")){
                             lamp.get(0).setWeather("3");
+                            weather.setText("현재 위치한 지역의 날씨는 '비'입니다.");
                         }
                         else{
                             lamp.get(0).setWeather("4");
+                            weather.setText("현재 위치한 지역의 날씨는 '눈'입니다.");
                         }
 
                     }

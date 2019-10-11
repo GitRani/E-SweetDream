@@ -56,7 +56,7 @@ public class PopupActivity extends AppCompatActivity {
         setResult(102, intent);
         finish();
     }
-
+    
     //취소 버튼 클릭
     public void mOnClose(View v){
         //데이터 전달하기

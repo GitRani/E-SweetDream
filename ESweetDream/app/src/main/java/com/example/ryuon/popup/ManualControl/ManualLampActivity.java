@@ -33,22 +33,28 @@ public class ManualLampActivity extends AppCompatActivity implements ManualContr
 
     // 버튼 이벤트
     public void moodOff(View view){
+        int deviceIndex = BluetoothHelper.findingIndex("무드등");
+        send_power_Data(deviceIndex, "0");
+
         // module_name 어레이리스트를 탐색하여 무드등이 포함된 인덱스를 찾는다.
-        for(int i = 0; i < module_name.size(); i++){
-            if(module_name.get(i).contains("무드등")){
-                // 무드등을 찾았으면 그때의 index와 무드등의 전원종료 정보를 send_Power_Data 메소드(바로 아래쪽에 있음)로 넘긴다.
-                send_power_Data(i,"0");
-            }
-        }
+//        for(int i = 0; i < module_name.size(); i++){
+//            if(module_name.get(i).contains("무드등")){
+//                // 무드등을 찾았으면 그때의 index와 무드등의 전원종료 정보를 send_Power_Data 메소드(바로 아래쪽에 있음)로 넘긴다.
+//                send_power_Data(i,"0");
+//            }
+//        }
     }
     public void moodOn(View view){
+        int deviceIndex = BluetoothHelper.findingIndex("무드등");
+        send_power_Data(deviceIndex, "1");
+
         // module_name 어레이리스트를 탐색하여 무드등이 포함된 인덱스를 찾는다.
-        for(int i = 0; i < module_name.size(); i++) {
-            if (module_name.get(i).contains("무드등")) {
-                // 무드등을 찾았으면 그때의 index와 무드등의 전원종료 정보를 send_Power_Data 메소드(바로 아래쪽에 있음)로 넘긴다.
-                send_power_Data(i,"1");
-            }
-        }
+//        for(int i = 0; i < module_name.size(); i++) {
+//            if (module_name.get(i).contains("무드등")) {
+//                // 무드등을 찾았으면 그때의 index와 무드등의 전원종료 정보를 send_Power_Data 메소드(바로 아래쪽에 있음)로 넘긴다.
+//                send_power_Data(i,"1");
+//            }
+//        }
 
     }
 

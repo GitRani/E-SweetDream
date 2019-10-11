@@ -39,6 +39,17 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="날씨정보를 받아오는 중입니다. 잠시만 기다려주세요. \n 완료되면 이곳에 날씨정보가 표시됩니다."/>
+
+    </LinearLayout>
+
 
     <ListView
         android:id="@+id/group_list_mood"

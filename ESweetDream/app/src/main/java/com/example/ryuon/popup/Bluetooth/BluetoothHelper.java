@@ -6,6 +6,7 @@ import com.example.ryuon.popup.Module_Object.Group;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -47,6 +48,7 @@ public class BluetoothHelper implements Serializable, Runnable {
 
         try {
           while (!Thread.currentThread().isInterrupted()) {
+              receiveData(findingIndex("센서모듈"));
               Thread.sleep(3000);
               System.out.println("Thread is alive ..");
           }
@@ -145,58 +147,111 @@ public class BluetoothHelper implements Serializable, Runnable {
         }
     }
 
-//        // 센서모듈만요
-//    public void receiveData() {
-//        for (int i = 0; i < bluetoothDevices.size(); i ++){
-//            if (bluetoothDevices.get(i).getName().contains("ESD0-센서모듈")) {
-//
-//            }
-//        }
-//        final Handler handler = new Handler(); // 나중에 안되면 내 책임 - import 둘중 하나 첫번쨰꺼 고름 (android.os)
-//        // 데이터를 수신하기 위한 버퍼를 생성
-//        readBufferPosition = 0;
-//        readBuffer = new byte[1024];
-//
+    public static int findingIndex(String moduleName) {
+        int index = 0;
+        int deviceIndex = 0;
+
+        for (BluetoothDevice bluetoothDevice : devices) {
+            if (bluetoothDevice.getName().contains(moduleName)) {
+                deviceIndex = index;
+            }
+            index++;
+        }
+        return deviceIndex;
+    }
+
+    Byte humidity = 0;
+    Byte temperature = 0;
+    Byte lux = 0;
+    public void receiveData(int deviceIndex) {
+        final InputStream inputStream = inputStreams.get(deviceIndex);
+        // 데이터를 수신하기 위한 버퍼를 생성
+        int readBufferPosition = 0;
+        byte[] readBuffer = new byte[1024];
+
+        try {
+            int byteAvailable = inputStream.available(); // 데이터를 수신했는지 확인합니다.
+            if (byteAvailable > 0) {                     // 데이터가 수신 된 경우
+                byte[] bytes = new byte[byteAvailable];  // 입력 스트림에서 바이트 단위로 읽어 옵니다.
+                inputStream.read(bytes);                 // 읽은 데이터를 bytes에 저장하고 읽은 바이트 수를 반환하는 read() 메소드.
+
+                int counter = 0;
+                for (int i = 0; i < byteAvailable; i++) {
+                    byte tempByte = bytes[i];
+
+                    switch (counter) {
+                        case 0:
+                            humidity = tempByte;
+                            counter++;
+                            break;
+                        case 1:
+                            temperature = tempByte;
+                            counter++;
+                            break;
+                        case 2:
+                            lux = tempByte;
+                            counter++;
+                            break;
+                        case 3:
+                            counter = 0;
+                            break;
+                    }
+                    
+                    System.out.println("☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★ : " + humidity + " " + temperature + " "  + lux);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 //        // 데이터를 수신하기 위한 쓰레드 생성
-//        workerThread = new Thread(new Runnable() {
+//        Thread workerThread = new Thread(new Runnable() {
+//            int readBufferPosition = 0;
+//            byte[] readBuffer = new byte[1024];
+//
+//
+//
 //            @Override
 //            public void run() {
-//                while(Thread.currentThread().isInterrupted()) {
+//                while (Thread.currentThread().isInterrupted()) {
 //                    try {
 //                        // 데이터를 수신했는지 확인합니다.
 //                        int byteAvailable = inputStream.available();
 //                        // 데이터가 수신 된 경우
-//                        if(byteAvailable > 0) {
+//                        if (byteAvailable > 0) {
 //                            // 입력 스트림에서 바이트 단위로 읽어 옵니다.
 //                            byte[] bytes = new byte[byteAvailable];
-//                            inputStream.read(bytes);
+//                            inputStream.read(bytes); // 읽은 데이터를 bytes에 저장하고 읽은 바이트 수를 반환하는 read() 메소드.
 //                            // 입력 스트림 바이트를 한 바이트씩 읽어 옵니다.
-//                            for(int i = 0; i < byteAvailable; i++) {
+//                            for (int i = 0; i < byteAvailable; i++) {
 //                                byte tempByte = bytes[i];
 //                                // 개행문자를 기준으로 받음(한줄)
-//                                if(tempByte == '\n') {
+//                                if (tempByte == '\n') {
 //                                    // readBuffer 배열을 encodedBytes로 복사
 //                                    byte[] encodedBytes = new byte[readBufferPosition];
 //                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
 //                                    // 인코딩 된 바이트 배열을 문자열로 변환
 //                                    final String text = new String(encodedBytes, "US-ASCII");
 //                                    readBufferPosition = 0;
-//                                    handler.post(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            // 텍스트 뷰에 출력
-//                                            textViewReceive.append(text + "\n");
-//                                        }
-//                                    });
+////                                    handler.post(new Runnable() {
+////                                        @Override
+////                                        public void run() {
+////                                            // 텍스트 뷰에 출력
+////                                            textViewReceive.append(text + "\n");
+////                                        }
+////                                    });
 //                                } // 개행 문자가 아닐 경우
 //                                else {
 //                                    readBuffer[readBufferPosition++] = tempByte;
+//                                    System.out.println(tempByte);
 //                                }
 //                            }
 //                        }
 //                    } catch (IOException e) {
 //                        e.printStackTrace();
 //                    }
+//
 //                    try {
 //                        // 1초마다 받아옴
 //                        Thread.sleep(1000);
@@ -207,5 +262,5 @@ public class BluetoothHelper implements Serializable, Runnable {
 //            }
 //        });
 //        workerThread.start();
-//    }
+    }
 }
