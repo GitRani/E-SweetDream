@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
         TextView t = (TextView) findViewById(R.id.t);
         t.setText("현재 사용자가 생성한 그룹의 목록입니다.\n※ 그룹 편집을 통하여 해당 그룹에 모듈을 포함시킬 수 있습니다.");
 
-        TextView tt = (TextView)findViewById(R.id.tt);
-        tt.setText(mDbOpenHelper.test());
+//        TextView tt = (TextView)findViewById(R.id.tt);
+//        tt.setText(mDbOpenHelper.test());
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -1,13 +1,19 @@
 package com.example.ryuon.popup.Module_Object;
 
 public class Lamp extends module{
-    // 앞으로 구현할 부분
     String sleep_Time = "";
+    String sleep_Time_before = "";
     String wake_Time = "";
 
     private String weather = "0";
     private String color = "0";
     private String power = "1"; // 전원
+
+    public void set_sleep_time_before(String sleep_Time_before){this.sleep_Time_before = sleep_Time_before;}
+
+    public String get_sleep_time_before(){
+        return sleep_Time_before;
+    }
 
     public void set_sleep_time(String sleep_time){
         this.sleep_Time = sleep_time;

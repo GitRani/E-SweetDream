@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,10 +22,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.ryuon.popup.AutoControl.AutoBlindActivity;
 import com.example.ryuon.popup.AutoControl.AutoControlConditionActivity;
 
 
 import com.example.ryuon.popup.AutoControl.AutoLampActivity;
+import com.example.ryuon.popup.AutoControl.AutoPlugActivity;
 import com.example.ryuon.popup.Bluetooth.BluetoothHelper;
 import com.example.ryuon.popup.CustomViewAdapter.GroupControl.ListViewBtnAdapter_Blind;
 import com.example.ryuon.popup.CustomViewAdapter.GroupControl.ListViewBtnAdapter_Lamp;
@@ -97,8 +100,12 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
     Thread thread;
     Thread weatherThread;
     Thread autoMoodThread;
+    Thread autoblindTrhead;
+    Thread autoplugThread;
 
     AutoLampActivity autoLampActivity;
+    AutoBlindActivity autoBlindActivity;
+    AutoPlugActivity autoPlugActivity;
 
     final Handler handler = new Handler(); // 날씨 스레드를 위한 핸들러
 
@@ -108,12 +115,14 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
     //날씨 결과
     String result;
 
+    TextView sensingValue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_control);
 
-
+        sensingValue = (TextView) findViewById(R.id.sensing);
         receivedData_selected_group = (Group) getIntent().getSerializableExtra("selectedGroup");
 
         moduleList.addAll(receivedData_selected_group.getModule_List());
@@ -176,6 +185,10 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
         sensorAdapter = new ListViewBtnAdapter_Sensor(this, R.layout.listview_btn_item3, sensor) ;
         listview3 = (ListView)findViewById(R.id.group_list_sensor);
         listview3.setAdapter(sensorAdapter);
+        if (module_name.contains("ESD0-센서모듈")) {
+            searchingSensingValue();
+        }
+
 
         Intent intent=getIntent();
         String message = intent.getStringExtra(EXTRA_MESSAGE);
@@ -254,10 +267,26 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
             auto_control_Info = (ArrayList<String>)data.getSerializableExtra("go_GroupControl");
 
             String make_sleep_time = auto_control_Info.get(0) + auto_control_Info.get(1);
-            lamp.get(0).set_sleep_time(make_sleep_time);
-
             String wake_sleep_time = auto_control_Info.get(2) + auto_control_Info.get(3);
-            lamp.get(0).set_wake_time(wake_sleep_time);
+            if (lamp.size() > 0) {
+                lamp.get(0).set_sleep_time(make_sleep_time);
+                lamp.get(0).set_wake_time(wake_sleep_time);
+                String sleep_time_before = auto_control_Info.get(4);
+                lamp.get(0).set_sleep_time_before(sleep_time_before);
+            }
+            if (blind.size() > 0) {
+                blind.get(0).set_sleep_time(make_sleep_time);
+                blind.get(0).set_wake_time(wake_sleep_time);
+                blind.get(0).setLux(Integer.valueOf(auto_control_Info.get(9)));
+            }
+
+            if (plug.size() > 0) {
+                plug.get(0).setTemperature(Integer.valueOf(auto_control_Info.get(5)));
+                plug.get(0).setTemperature_ud(Integer.valueOf(auto_control_Info.get(6)));
+                plug.get(0).setHumidity(Integer.valueOf(auto_control_Info.get(7)));
+                plug.get(0).setHumidity_ud(Integer.valueOf(auto_control_Info.get(8)));
+            }
+
 
         }
 
@@ -284,8 +313,8 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
     public void onListBtnClick(int event_position) {
         if (event_position == 1) {
             Intent intent = new Intent(this, ManualPlugActivity.class);
-            intent.putExtra("moduleNames", module_name);
-            intent.putExtra("selectedGroup", receivedData_selected_group);
+            intent.putExtra("plug",plug);
+            startActivity(intent);
         } else if (event_position == 2){
             Intent intent = new Intent(this, ManualBlindActivity.class);
             intent.putExtra("moduleNames", module_name);
@@ -332,34 +361,54 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
         if (!lamp.isEmpty() && lamp.get(0).get_sleep_time() != "" && lamp.get(0).get_wake_time() != "") {
             lampAdapter.setActivate(on);
             lampAdapter.notifyDataSetChanged();
+            if (on) {
+                if( autoMoodThread == null){
+                    autoLampActivity = new AutoLampActivity(lamp);
+                    autoMoodThread = new Thread(autoLampActivity);
 
+                    autoMoodThread.start();
 
-            boolean interrupt = false;
-            if(autoLampActivity == null && autoMoodThread == null){
-                autoLampActivity = new AutoLampActivity(lamp);
-                autoMoodThread = new Thread(autoLampActivity);
-
-                autoMoodThread.start();
-
-            }else{
-                autoMoodThread.interrupt();
-                autoLampActivity = new AutoLampActivity(lamp);
-                autoMoodThread = new Thread(autoLampActivity);
-
-                autoMoodThread.start();
+                }
+            } else {
+                if (autoMoodThread != null){
+                    autoMoodThread.interrupt();
+                    autoMoodThread = null;
+                }
             }
-
-
         }
 
         if (!plug.isEmpty()) {
             plugAdapter.setActivate(on);
             plugAdapter.notifyDataSetChanged();
+            if (on) {
+                if (autoplugThread == null) {
+                    autoPlugActivity = new AutoPlugActivity(plug);
+                    autoplugThread = new Thread(autoPlugActivity);
+
+                    autoplugThread.start();
+                }
+            } else {
+                if (autoplugThread != null) {
+                    autoplugThread.interrupt();
+                    autoplugThread = null;
+                }
+            }
         }
 
         if (!blind.isEmpty()) {
             blindAdapter.setActivate(on);
             blindAdapter.notifyDataSetChanged();
+            if (on) {
+                if (autoblindTrhead == null) {
+                    autoBlindActivity = new AutoBlindActivity(blind);
+                    autoblindTrhead = new Thread(autoBlindActivity);
+
+                    autoblindTrhead.start();
+                }
+            } else if (autoblindTrhead != null) {
+                autoblindTrhead.interrupt();
+                autoblindTrhead = null;
+            }
         }
 
 
@@ -432,10 +481,35 @@ public class GroupControlActivity extends AppCompatActivity implements ListViewB
         }
     }
 
+    public void searchingSensingValue(){
+        Thread sensingThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(!Thread.currentThread().isInterrupted()){ // 안먹힘...
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            sensingValue.setText("온도 : " + BluetoothHelper.temperature + "℃, 습도 : " +  BluetoothHelper.humidity + "%, 조도 : " + BluetoothHelper.lux + "\n");
+                        }
+                    });
+                    try{
+                        thread.sleep(3000);
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        }
+        );
+        sensingThread.start();
+    }
+
     @Override
     public void onBackPressed() {
         thread.interrupt();
-        weatherThread.interrupt();
+//        weatherThread.interrupt();
 
         thread = null;
         weatherThread = null;

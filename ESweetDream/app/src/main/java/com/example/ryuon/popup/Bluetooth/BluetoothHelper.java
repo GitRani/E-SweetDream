@@ -1,7 +1,9 @@
 package com.example.ryuon.popup.Bluetooth;
 
+import com.example.ryuon.popup.Activity.GroupControlActivity;
 import com.example.ryuon.popup.Activity.GroupEditingActivity_new;
 import com.example.ryuon.popup.Module_Object.Group;
+import com.example.ryuon.popup.R;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -9,6 +11,8 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +30,8 @@ public class BluetoothHelper implements Serializable, Runnable {
     static ArrayList<OutputStream> outputStreams;
     ArrayList<InputStream> inputStreams;
     ArrayList<String> module_name; // GroupControlActivity에서 넘겨준 module 이름
+
+    static ArrayList<BluetoothDevice> bluetoothDevices;
 
     boolean running = true;
 
@@ -53,7 +59,7 @@ public class BluetoothHelper implements Serializable, Runnable {
               System.out.println("Thread is alive ..");
           }
         } catch (InterruptedException e) {
-
+            e.printStackTrace();
         } finally {
             System.out.println("Thread is dead !!");
             disconnectDevice();
@@ -91,7 +97,7 @@ public class BluetoothHelper implements Serializable, Runnable {
     }
 
     public void connectDevice(ArrayList deviceNames) {
-        ArrayList<BluetoothDevice> bluetoothDevices = new ArrayList<>();
+        bluetoothDevices = new ArrayList<>();
         bluetoothSockets = new ArrayList<>();
         outputStreams = new ArrayList<>();
         inputStreams = new ArrayList<>();
@@ -147,22 +153,60 @@ public class BluetoothHelper implements Serializable, Runnable {
         }
     }
 
+    public static void send_Data(int deviceIndex, char send_Info) {
+        try{
+            // 데이터 송신
+            outputStream = outputStreams.get(deviceIndex);
+            outputStream.write(send_Info);
+//            if (send_Info == 1) {
+//                outputStream.write(send_Info);
+//            } else if (send_Info == 2) {
+//                outputStream.write(send_Info);
+//            }
+
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void send_Data(int deviceIndex, Byte plugNum, Byte onoff) {
+        try{
+            // 데이터 송신
+            outputStream = outputStreams.get(deviceIndex);
+            if (plugNum == 1) {
+                if (onoff == 1){
+                    outputStream.write(11); // ON
+                } else {
+                    outputStream.write(10); // OFF
+                }
+
+            } else if (plugNum == 2) {
+                if (onoff == 1){
+                    outputStream.write(21); // ON
+                } else {
+                    outputStream.write(20); // OFF
+                }
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static int findingIndex(String moduleName) {
-        int index = 0;
         int deviceIndex = 0;
 
-        for (BluetoothDevice bluetoothDevice : devices) {
-            if (bluetoothDevice.getName().contains(moduleName)) {
-                deviceIndex = index;
+        for (int i = 0; i < bluetoothDevices.size(); i++) {
+            if (bluetoothDevices.get(i).getName().contains(moduleName)) {
+                deviceIndex = i;
             }
-            index++;
         }
+
         return deviceIndex;
     }
 
-    Byte humidity = 0;
-    Byte temperature = 0;
-    Byte lux = 0;
+    public static Byte humidity = 0;
+    public static Byte temperature = 0;
+    public static Byte lux = 0;
     public void receiveData(int deviceIndex) {
         final InputStream inputStream = inputStreams.get(deviceIndex);
         // 데이터를 수신하기 위한 버퍼를 생성
@@ -196,8 +240,6 @@ public class BluetoothHelper implements Serializable, Runnable {
                             counter = 0;
                             break;
                     }
-                    
-                    System.out.println("☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★ : " + humidity + " " + temperature + " "  + lux);
                 }
             }
         } catch (IOException e) {

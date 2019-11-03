@@ -2,7 +2,72 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop ="200dp"
+        android:paddingLeft="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="플러그 1 전원 : " />
+
+        <Button
+            android:id="@+id/plug1on"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="ON"
+            android:textColor="#FF0d00"
+            android:onClick="plug1On"
+            />
+
+        <Button
+            android:id="@+id/plug1off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="OFF"
+            android:onClick="plug1Off"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:paddingLeft="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="플러그 2 전원 : " />
+
+        <Button
+            android:id="@+id/plug2on"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="ON"
+            android:onClick="plug2On"
+            />
+
+        <Button
+            android:id="@+id/plug2off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="OFF"
+            android:textColor="#FF0d00"
+            android:onClick="plug2Off"
+            />
+
+    </LinearLayout>
 
 
 </LinearLayout>
